@@ -13,7 +13,7 @@ Parameters:
     Default: personal
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     AllowedValues: [dev, tst, int, uat, prd, poc]
@@ -25,7 +25,7 @@ Parameters:
     Default: daas
   Support:
     Type: String
-    Default: nathan.ganesh@gmail.com
+    Default: hamsachandra6@gmail.com
 
 Resources:
   CreateNATGateway:

@@ -45,7 +45,7 @@ Parameters:
     Default: false
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     AllowedValues: [dev, tst, int, uat, prd, poc]
@@ -78,7 +78,7 @@ Parameters:
     Default: false
   Support:
     Type: String
-    Default: nathan.ganesh@gmail.com
+    Default: hamsac624@gmail.com
   Timeout:
     Type: String
     Default: 60
@@ -94,7 +94,7 @@ Conditions:
   isOpenPyXmlLayerEnabled: !Equals [!Ref EnableOpenPyXmlLayer, true]
   isSciPyLayerEnabled: !Equals [!Ref EnableSciPyLayer, true]
   isXmlToDictLayerEnabled: !Equals [!Ref EnableXmlToDictLayer, true]
-  isUSWest: !Equals [!Ref "AWS::Region", "us-west-2"]
+  isUSEast: !Equals [!Ref "AWS::Region", "us-east-1"]
   isLambdaS3EventEnabled: !Not [ !Equals [!Ref S3EventTriggerArn, false] ]
   isLambdaSQSEventEnabled: !Not [ !Equals [!Ref SqsEventTriggerArn, false] ]
   isVpcConfigEnabled: !Equals [!Ref EnableVpcConfig, true]
@@ -141,15 +141,15 @@ Resources:
             - !Ref "AWS::NoValue"
           - !If
             - isPandasLayerEnabled
-            - arn:aws:lambda:us-west-2:770693421928:layer:Klayers-python38-pandas:43
+            - arn:aws:lambda:us-east-1:760160142816:layer:Klayers-python38-pandas:43
             - !Ref "AWS::NoValue"
           - !If
             - isOpenPyXmlLayerEnabled
-            - arn:aws:lambda:us-west-2:770693421928:layer:Klayers-python38-openpyxl:9
+            - arn:aws:lambda:us-east-1:760160142816:layer:Klayers-python38-openpyxl:9
             - !Ref "AWS::NoValue"
           - !If
             - isSciPyLayerEnabled
-            - !Sub "arn:aws:lambda:us-west-2:${AWS::AccountId}:layer:AWSLambda-Python38-SciPy1x:29"
+            - !Sub "arn:aws:lambda:us-east-1:${AWS::AccountId}:layer:AWSLambda-Python38-SciPy1x:29"
             - !Ref "AWS::NoValue"
           - !If
             - isXmlToDictLayerEnabled
@@ -217,9 +217,15 @@ Resources:
                   - "ec2:DescribeInstances"
                   - "ec2:CreateNetworkInterface"
                   - "ec2:AttachNetworkInterface"
-                  - "ec2:DescribeNetworkInterfaces"
+                  - "ec2:DescribeNetworkInterfatces"
                   - "ec2:DeleteNetworkInterface"
                 Resource: "*"
+              -
+                Sid: "allowLambdaLayers"
+                Effect: "Allow"
+                Action: "lambda:GetLayerVersion"
+                Resource: 
+                  Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:*"
               -
                 Sid: "SQSReadaccess"
                 Effect: "Allow"
@@ -263,6 +269,13 @@ Resources:
       Enabled: true
       EventSourceArn: !Ref SqsEventTriggerArn
       FunctionName: !GetAtt CreateLambda.Arn
+
+  LambdaLyrxmltodictnPermissions:
+    Type: AWS::Lambda::LayerVersionPermission
+    Properties: 
+      Action: lambda:GetLayerVersion
+      LayerVersionArn: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${Entity}-lmdlyr-xmltodict-${Environment}:1
+      Principal: !Sub ${AWS::AccountId}
 
 Outputs:
   LamdbaFunctionARN:

@@ -4,7 +4,7 @@ Description: AWS Common Template for Lambda Layer.
 Parameters:
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
   Name:

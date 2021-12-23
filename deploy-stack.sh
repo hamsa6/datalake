@@ -19,6 +19,7 @@ then
     if aws s3 ls "$commonS3Bucket" 2>&1 | grep -q 'bucket does not exist';
     then
       echo "common bucket not found! creating the common bucket"
+      echo $region
       sh ../daas-common/deploy-template.sh $entity $accountId $environment $region $serviceType
     else
       echo "common bucket found!!"
@@ -74,7 +75,7 @@ then
         aws cloudformation $type-stack \
             --stack-name $stackName-$environment \
             --region $region \
-            --template-url https://s3-$region.amazonaws.com/$commonS3Bucket/$serviceType/scripts/stacks/$stackName/$stackName.yml \
+            --template-url https://$entity-s3-$accountId-$region-common-artifacts-$environment.s3.amazonaws.com/$serviceType/scripts/stacks/stk-$serviceType-$application/stk-$serviceType-$application.yml \
             --parameters ParameterKey=Entity,ParameterValue=$entity ParameterKey=Environment,ParameterValue=$environment \
                         ParameterKey=LambdaZipFileName,ParameterValue=$stackName/$serviceType-$application-$lambdaVersion.zip \
             --capabilities CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM CAPABILITY_IAM
@@ -83,8 +84,10 @@ then
         aws cloudformation $type-stack \
             --stack-name $stackName-$environment \
             --region $region \
-            --template-url https://s3-$region.amazonaws.com/$commonS3Bucket/$serviceType/scripts/stacks/$stackName/$stackName.yml \
-            --parameters ParameterKey=Entity,ParameterValue=$entity ParameterKey=Environment,ParameterValue=$environment    
+            --parameters ParameterKey=Entity,ParameterValue=$entity ParameterKey=Environment,ParameterValue=$environment \
+            --template-url https://hamsa-s3-760160142816-us-east-1-common-artifacts-dev.s3.amazonaws.com/$serviceType/scripts/stacks/stk-$serviceType-$application/stk-$serviceType-$application.yml \
+            --profile default 
+            #--template-url https://s3-$region.amazonaws.com/$commonS3Bucket/$serviceType/scripts/stacks/$stackName/$stackName.yml \
     fi
 else
     echo "Missing required parameter. Usage: deploy-stack.sh <entity> <account id> <application> <environment> <region> <service type> <<lambda version>"

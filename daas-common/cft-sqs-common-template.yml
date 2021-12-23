@@ -10,7 +10,7 @@ Parameters:
     Default: 55100
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     AllowedValues: [dev, tst, int, uat, prd, poc]
@@ -38,7 +38,7 @@ Parameters:
     Default: daas
   Support:
     Type: String
-    Default: nathan.ganesh@gmail.com
+    Default: hamsac624@gmail.com
 
 Conditions:
   isFifo: !Equals [ !Ref QueueType, 'fifo']

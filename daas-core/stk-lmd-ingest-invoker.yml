@@ -4,7 +4,7 @@ Description: Invoker Lambda for data lake as a service - core (DaaS - Core)
 Parameters:
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     Default: dev
@@ -20,8 +20,8 @@ Resources:
         Environment: !Ref Environment
         Name: !Sub ${Entity}-lmd-ingest-invoker-${Environment}
         Description: !Sub Lambda Invoker for Datalake as a Service deployed in ${Environment}
-        EnablePandasLayer: true
-        EnableOpenPyXmlLayer: true
+        EnablePandasLayer: false
+        EnableOpenPyXmlLayer: false
         EnableXmlToDictLayer: true
         SqsEventTriggerArn: 
           Fn::ImportValue:
@@ -31,7 +31,7 @@ Resources:
         LambdaEnvVarFileName: !Sub stacks/stk-lmd-ingest-invoker/stk-lmd-ingest-invoker-env-var.yml
         MemorySize: 128
         Timeout: 120
-      TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/lmd/scripts/template/cft-lmd-common-template.yml
+      TemplateURL: !Sub https://${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-dev.s3.amazonaws.com/lmd/scripts/template/cft-lmd-common-template.yml
       TimeoutInMinutes : '60'
 
   CreateDaaSMetadataInvkPolicy:
@@ -59,6 +59,12 @@ Resources:
             Action: "sts:AssumeRole"
             Resource: 
               Fn::Sub: "arn:aws:iam::*:role/rle-${Entity}-lmd-metadata-generator-${Environment}"
+          -
+            Sid: "allowLambdaLayers"
+            Effect: "Allow"
+            Action: "lambda:GetLayerVersion"
+            Resource: 
+              Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:*"
           -
             Sid: "allowGlueAccess"
             Effect: "Allow"

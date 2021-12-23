@@ -14,7 +14,8 @@ then
     # Check if common bucket exits
     if aws s3 ls "$commonS3Bucket" 2>&1 | grep -q 'bucket does not exist'; then
         #Create the common bucket first
-        aws s3api  create-bucket --acl private --bucket $commonS3Bucket --region $region --create-bucket-configuration LocationConstraint=$region
+        echo $region
+        aws s3api  create-bucket --acl private --bucket $commonS3Bucket --region $region
         sleep 20
         # Make common bucket private
         aws s3api put-public-access-block --bucket $commonS3Bucket --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"

@@ -13,7 +13,7 @@ Parameters:
     Default: personal
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     AllowedValues: [dev, tst, int, uat, prd, poc]
@@ -27,10 +27,10 @@ Parameters:
     Default: false
   PrivateSubnet1AZ:
     Type: String
-    Default: us-west-2d
+    Default: us-east-1a
   PrivateSubnet2AZ:
     Type: String
-    Default: us-west-2c
+    Default: us-east-1b
   Project:
     Type: String
     Default: daas
@@ -42,20 +42,20 @@ Parameters:
     Default: false
   PublicSubnet1AZ:
     Type: String
-    Default: us-west-2a
+    Default: us-east-1c
   PublicSubnet2AZ:
     Type: String
-    Default: us-west-2b
+    Default: us-east-1d
   Support:
     Type: String
-    Default: nathan.ganesh@gmail.com
+    Default: hamsachandra6@gmail.com
   VpcCidrBlock:
     Type: String
     Default: 10.31.0.0/16
 
 Mappings:
   RegionMap:
-    us-west-2:
+    us-east-1:
      "AMI": "ami-0518bb0e75d3619ca"
 
 Conditions:

@@ -4,7 +4,7 @@ Description: Metadata Generator Lambda for data lake as a service - client (DaaS
 Parameters:
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     Default: dev
@@ -23,7 +23,7 @@ Resources:
         HandlerName: lmd-metadata-generator.lambda_handler
         MemorySize: 128
         Timeout: 120
-      TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/lmd/scripts/template/cft-lmd-common-template.yml
+      TemplateURL: https://hamsa-s3-902380713093-us-east-1-common-artifacts-dev.s3.amazonaws.com/lmd/scripts/template/cft-lmd-common-template.yml
       TimeoutInMinutes : '60'
 
   CreateDaaSGlueClientServiceRole:
@@ -73,7 +73,7 @@ Resources:
             Effect: "Allow"
             Action: "lambda:*"
             Resource: 
-              Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Entity}-lmd-metadata-generator-${Environment}"
+              - Fn::Sub: "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Entity}-lmd-metadata-generator-${Environment}"
           -
             Sid: "allowGlueAccess"
             Effect: "Allow"
@@ -108,7 +108,8 @@ Resources:
               - "iam:PutRolePolicy"
               - "iam:UpdateRole"
               - "iam:UpdateRoleDescription"
-            Resource: "arn:aws:iam::${AWS::AccountId}:role/rle-metadata-generator-service-role-${Environment}"
+            Resource: 
+              - Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/rle-metadata-generator-service-role-${Environment}"
           -
             Sid: "allowGetLogEvents"
             Effect: "Allow"

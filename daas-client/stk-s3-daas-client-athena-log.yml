@@ -5,7 +5,7 @@ Description: Athena log storage for data lake as a service - client (DaaS - Clie
 Parameters:
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
     Default: dev
@@ -18,5 +18,6 @@ Resources:
       Parameters:
         Environment: !Sub ${Environment}
         Name: !Sub ${Entity}-s3-${AWS::Region}-daas-client-athena-log
-      TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/s3/scripts/template/cft-s3-common-template.yml
+      #TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/s3/scripts/template/cft-s3-common-template.yml
       TimeoutInMinutes: '60'
+      TemplateURL: https://hamsa-s3-902380713093-us-east-1-common-artifacts-dev.s3.amazonaws.com/s3/scripts/template/cft-s3-common-template.yml

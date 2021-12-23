@@ -5,7 +5,7 @@ Description: xmltodic Lambda layer for data lake as a service - core (DaaS - Cor
 Parameters:
   Entity:
     Type: String
-    Default: ganesh
+    Default: hamsa
   Environment:
     Type: String
   Name:
@@ -20,5 +20,6 @@ Resources:
         Environment: !Ref Environment
         Name: !Sub ${Name}-${Environment}
         LayerName: !Sub ${Name}
-      TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/lmdlyr/scripts/template/cft-lmdlyr-common-template.yml
+      #TemplateURL: !Sub https://s3-${AWS::Region}.amazonaws.com/${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-${Environment}/lmdlyr/scripts/template/cft-lmdlyr-common-template.yml
       TimeoutInMinutes : '60'
+      TemplateURL: !Sub https://${Entity}-s3-${AWS::AccountId}-${AWS::Region}-common-artifacts-dev.s3.amazonaws.com/lmdlyr/scripts/template/cft-lmdlyr-common-template.yml
